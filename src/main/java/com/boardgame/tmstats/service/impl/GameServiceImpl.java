@@ -4,6 +4,7 @@ import com.boardgame.tmstats.domain.Board;
 import com.boardgame.tmstats.domain.Corporation;
 import com.boardgame.tmstats.domain.Game;
 import com.boardgame.tmstats.domain.Player;
+import com.boardgame.tmstats.domain.wrapper.PlayerWrapper;
 import com.boardgame.tmstats.repository.BoardRepository;
 import com.boardgame.tmstats.repository.CorporationRepository;
 import com.boardgame.tmstats.repository.GameRepository;
@@ -46,54 +47,19 @@ public class GameServiceImpl implements GameService {
     game.setBoard(board);
     gameRepository.save(game);
     if (gameRequest.getPlayerOne() != null) {
-      Player player = new Player();
-      player.setName(gameRequest.getPlayerOne().getName());
-      player.setPoints(gameRequest.getPlayerOne().getPoints());
-      Corporation corporation = corporationRepository.findCorporationByName(gameRequest.getPlayerOne().getCorporation())
-          .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
-      player.setCorporation(corporation);
-      playerRepository.save(player);
-      game.getPlayers().add(player);
+      game.getPlayers().add(createPlayer(gameRequest.getPlayerOne()));
     }
     if (gameRequest.getPlayerTwo() != null) {
-      Player player = new Player();
-      player.setName(gameRequest.getPlayerTwo().getName());
-      player.setPoints(gameRequest.getPlayerTwo().getPoints());
-      Corporation corporation = corporationRepository.findCorporationByName(gameRequest.getPlayerTwo().getCorporation())
-          .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
-      player.setCorporation(corporation);
-      playerRepository.save(player);
-      game.getPlayers().add(player);
+      game.getPlayers().add(createPlayer(gameRequest.getPlayerTwo()));
     }
     if (gameRequest.getPlayerThree() != null) {
-      Player player =  new Player();
-      player.setName(gameRequest.getPlayerThree().getName());
-      player.setPoints(gameRequest.getPlayerThree().getPoints());
-      Corporation corporation = corporationRepository.findCorporationByName(gameRequest.getPlayerThree().getCorporation())
-          .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
-      player.setCorporation(corporation);
-      playerRepository.save(player);
-      game.getPlayers().add(player);
+      game.getPlayers().add(createPlayer(gameRequest.getPlayerThree()));
     }
     if (gameRequest.getPlayerFour() != null) {
-      Player player = new Player();
-      player.setName(gameRequest.getPlayerFour().getName());
-      player.setPoints(gameRequest.getPlayerFour().getPoints());
-      Corporation corporation = corporationRepository.findCorporationByName(gameRequest.getPlayerFour().getCorporation())
-          .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
-      player.setCorporation(corporation);
-      playerRepository.save(player);
-      game.getPlayers().add(player);
+      game.getPlayers().add(createPlayer(gameRequest.getPlayerFour()));
     }
     if (gameRequest.getPlayerFive() != null) {
-      Player player = new Player();
-      player.setName(gameRequest.getPlayerFive().getName());
-      player.setPoints(gameRequest.getPlayerFive().getPoints());
-      Corporation corporation = corporationRepository.findCorporationByName(gameRequest.getPlayerFive().getCorporation())
-          .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
-      player.setCorporation(corporation);
-      playerRepository.save(player);
-      game.getPlayers().add(player);
+      game.getPlayers().add(createPlayer(gameRequest.getPlayerFive()));
     }
     return game;
   }
@@ -107,5 +73,16 @@ public class GameServiceImpl implements GameService {
       gameResponse.setBoardName(game.getBoard().getName());
       return gameResponse;
     }).collect(Collectors.toList());
+  }
+
+  private Player createPlayer(PlayerWrapper playerWrapper) {
+    Player player = new Player();
+    player.setName(playerWrapper.getName());
+    player.setPoints(playerWrapper.getPoints());
+    Corporation corporation = corporationRepository.findCorporationByName(playerWrapper.getCorporation())
+        .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
+    player.setCorporation(corporation);
+    playerRepository.save(player);
+    return player;
   }
 }

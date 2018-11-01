@@ -6,6 +6,9 @@ import com.boardgame.tmstats.response.GameResponse;
 import com.boardgame.tmstats.service.GameService;
 import com.boardgame.tmstats.utils.HeadersUtils;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -28,12 +31,17 @@ public class GameResource {
 
   private final GameService gameService;
 
+  @ApiOperation(value = "Create new game stats")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Successfully created.")
+  })
   @PostMapping
   public ResponseEntity<Game> createGame(@Valid @RequestBody GameRequest gameRequest) {
     Game game = gameService.createGame(gameRequest);
     return new ResponseEntity<>(game, HeadersUtils.getLocationHeaders(game.getId()), HttpStatus.CREATED);
   }
 
+  @ApiOperation(value = "Get all games")
   @GetMapping
   public ResponseEntity<List<GameResponse>> getGames() {
     return ResponseEntity.ok(gameService.getAllGames());

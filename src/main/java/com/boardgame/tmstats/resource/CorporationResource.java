@@ -1,7 +1,7 @@
 package com.boardgame.tmstats.resource;
 
-import com.boardgame.tmstats.domain.Player;
-import com.boardgame.tmstats.service.PlayerService;
+import com.boardgame.tmstats.domain.Corporation;
+import com.boardgame.tmstats.service.CorporationService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +16,15 @@ import java.util.List;
 
 @Log4j2
 @RestController
-@RequestMapping("/player")
+@RequestMapping("/corporation")
 @RequiredArgsConstructor
-public class PlayerResource {
+public class CorporationResource {
 
-  private final PlayerService playerService;
+  private final CorporationService corporationService;
 
-  @ApiOperation(value = "Get all players")
+  @ApiOperation(value = "Get all corporation")
   @GetMapping
-  public ResponseEntity<List<Player>> getPlayers() {
-    return ResponseEntity.ok(playerService.getAllPlayers());
+  public ResponseEntity<List<Corporation>> getCorporations() {
+    return ResponseEntity.ok(corporationService.getAllCorporations());
   }
 }
