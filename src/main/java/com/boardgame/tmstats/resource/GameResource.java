@@ -6,6 +6,9 @@ import com.boardgame.tmstats.response.GameResponse;
 import com.boardgame.tmstats.service.GameService;
 import com.boardgame.tmstats.utils.HeadersUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -28,6 +31,7 @@ public class GameResource {
 
   private final GameService gameService;
 
+  @ApiOperation(value = "Create new game stats")
   @PostMapping
   public ResponseEntity<Game> createGame(@Valid @RequestBody GameRequest gameRequest) {
     Game game = gameService.createGame(gameRequest);
