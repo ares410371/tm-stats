@@ -3,6 +3,7 @@ package com.boardgame.tmstats.resource;
 import com.boardgame.tmstats.domain.Corporation;
 import com.boardgame.tmstats.service.CorporationService;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -21,6 +22,7 @@ public class CorporationResource {
 
   private final CorporationService corporationService;
 
+  @ApiOperation(value = "Get all corporation")
   @GetMapping
   public ResponseEntity<List<Corporation>> getCorporations() {
     return ResponseEntity.ok(corporationService.getAllCorporations());

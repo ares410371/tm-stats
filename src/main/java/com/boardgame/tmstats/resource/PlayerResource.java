@@ -3,6 +3,7 @@ package com.boardgame.tmstats.resource;
 import com.boardgame.tmstats.domain.Player;
 import com.boardgame.tmstats.service.PlayerService;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -21,6 +22,7 @@ public class PlayerResource {
 
   private final PlayerService playerService;
 
+  @ApiOperation(value = "Get all players")
   @GetMapping
   public ResponseEntity<List<Player>> getPlayers() {
     return ResponseEntity.ok(playerService.getAllPlayers());
