@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
-  @Query("SELECT p FROM Player p WHERE p.name = :name")
-  Optional<Player> findPlayerByName(@Param("name") String name);
+  @Query("SELECT sum(p.points) FROM Player p JOIN Corporation c ON c.id = p.corporation.id WHERE c.name = :corporation GROUP BY c.name")
+  long sumOfCorporationPoints(@Param("corporation") String corporation);
+
+  @Query("SELECT sum(p.points) FROM Player p WHERE p.name = :player GROUP BY p.name")
+  long sumOfPlayerPoints(@Param("player") String player);
 }

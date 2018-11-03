@@ -13,12 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "player")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Player {
+public class Player implements Serializable {
 
   @Id
   @GeneratedValue(generator = "player_generator")

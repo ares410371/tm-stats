@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "game")
-public class Game {
+public class Game implements Serializable {
 
   @Id
   @GeneratedValue(generator = "game_generator")
