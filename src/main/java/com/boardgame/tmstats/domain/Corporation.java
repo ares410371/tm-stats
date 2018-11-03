@@ -7,11 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "corporation")
-public class Corporation {
+public class Corporation implements Serializable {
 
   @Id
   @GeneratedValue(generator = "corporation_generator")

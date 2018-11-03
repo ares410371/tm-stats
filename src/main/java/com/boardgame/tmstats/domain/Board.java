@@ -8,11 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "board")
-public class Board {
+public class Board implements Serializable {
 
   @Id
   @GeneratedValue(generator = "board_generator")
