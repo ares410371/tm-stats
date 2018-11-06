@@ -5,6 +5,8 @@ import com.boardgame.tmstats.domain.Corporation;
 import com.boardgame.tmstats.domain.Game;
 import com.boardgame.tmstats.domain.Player;
 import com.boardgame.tmstats.domain.wrapper.PlayerWrapper;
+import com.boardgame.tmstats.exceptions.InvalidBoardNameException;
+import com.boardgame.tmstats.exceptions.InvalidCorporationNameException;
 import com.boardgame.tmstats.repository.BoardRepository;
 import com.boardgame.tmstats.repository.CorporationRepository;
 import com.boardgame.tmstats.repository.GameRepository;
@@ -43,7 +45,7 @@ public class GameServiceImpl implements GameService {
     game.setGenerationCount(gameRequest.getGenerationCount());
 
     Board board = boardRepository.findBoardByName(gameRequest.getBoardName())
-        .orElseThrow(() -> new RuntimeException("Board not found."));
+        .orElseThrow(() -> new InvalidBoardNameException(gameRequest.getBoardName()));
     game.setBoard(board);
     gameRepository.save(game);
     if (gameRequest.getPlayerOne() != null) {
@@ -61,6 +63,7 @@ public class GameServiceImpl implements GameService {
     if (gameRequest.getPlayerFive() != null) {
       game.getPlayers().add(createPlayer(gameRequest.getPlayerFive()));
     }
+    game.setPlayerCount(game.getPlayers().size());
     return game;
   }
 
@@ -80,7 +83,7 @@ public class GameServiceImpl implements GameService {
     player.setName(playerWrapper.getName());
     player.setPoints(playerWrapper.getPoints());
     Corporation corporation = corporationRepository.findCorporationByName(playerWrapper.getCorporation())
-        .orElseThrow(() -> new IllegalArgumentException("Invalid corporation name"));
+        .orElseThrow(() -> new InvalidCorporationNameException(playerWrapper.getCorporation()));
     player.setCorporation(corporation);
     playerRepository.save(player);
     return player;
