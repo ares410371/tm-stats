@@ -1,32 +1,27 @@
 package com.boardgame.tmstats.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.io.Serializable;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "game")
-public class Game implements Serializable {
+public class Game extends BaseEntity {
 
-  @Id
-  @GeneratedValue(generator = "game_generator")
-  @SequenceGenerator(name = "game_generator", sequenceName = "game_sequence", initialValue = 100)
-  private Long id;
   @Column(name = "created_at")
   private LocalDateTime createdAt;
   @Column(name = "generation_count")
@@ -37,6 +32,8 @@ public class Game implements Serializable {
   private Boolean preludeExpansion;
   @Column(name = "colonies_expansion")
   private Boolean coloniesExpansion;
+  @Column(name = "player_count")
+  private int playerCount;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "board", unique = true)
@@ -47,4 +44,13 @@ public class Game implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"))
   private Set<Player> players = new HashSet<>();
 
+  @Override
+  public boolean equals(Object o) {
+    return super.equals(o);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }

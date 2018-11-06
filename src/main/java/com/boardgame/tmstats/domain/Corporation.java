@@ -1,24 +1,34 @@
 package com.boardgame.tmstats.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "corporation")
-public class Corporation implements Serializable {
+public class Corporation extends BaseEntity {
 
-  @Id
-  @GeneratedValue(generator = "corporation_generator")
-  @SequenceGenerator(name = "corporation_generator", sequenceName = "corporation_sequence", initialValue = 100)
-  private Long id;
+  @Column(name = "name")
   private String name;
+  @Column(name = "description")
+  private String description;
+  @Column(name = "card_effect")
+  private String effect;
+  @Column(name = "card_action")
+  private String action;
 
-  //todo add description of corporation, symbols of corporation, etc....
+  @Override
+  public boolean equals(Object o) {
+    return super.equals(o);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }

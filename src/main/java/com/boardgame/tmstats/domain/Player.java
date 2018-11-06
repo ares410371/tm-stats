@@ -1,30 +1,24 @@
 package com.boardgame.tmstats.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "player")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Player implements Serializable {
+public class Player extends BaseEntity {
 
-  @Id
-  @GeneratedValue(generator = "player_generator")
-  @SequenceGenerator(name = "player_generator", sequenceName = "player_sequence", initialValue = 100)
-  private Long id;
   @Column(name = "name")
   private String name;
   @Column(name = "points")
@@ -34,4 +28,13 @@ public class Player implements Serializable {
   @JoinColumn(name = "corporation", unique = true)
   private Corporation corporation;
 
+  @Override
+  public boolean equals(Object o) {
+    return super.equals(o);
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
 }
