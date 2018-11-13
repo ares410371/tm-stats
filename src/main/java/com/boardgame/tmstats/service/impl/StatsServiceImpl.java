@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,10 +45,9 @@ public class StatsServiceImpl implements StatsService {
               corporation.getName(),
               count,
               winCount,
-              winCount == 0L ? BigDecimal.ZERO : BigDecimal.valueOf(winCount)
-                  .multiply(B_HUNDRED).divide(BigDecimal.valueOf(count)),
+              winCount == 0L ? BigDecimal.ZERO : computePercentage(winCount, count),
               BigDecimal.valueOf(playerRepository.sumOfCorporationPoints(corporation.getName()))
-                  .divide(BigDecimal.valueOf(count))
+                  .divide(BigDecimal.valueOf(count), 3, RoundingMode.HALF_UP)
           ));
         });
     return result;
@@ -65,13 +65,18 @@ public class StatsServiceImpl implements StatsService {
               playerName,
               count,
               winCount,
-              winCount == 0L ? BigDecimal.ZERO : BigDecimal.valueOf(winCount)
-                  .multiply(B_HUNDRED).divide(BigDecimal.valueOf(count)),
+              winCount == 0L ? BigDecimal.ZERO : computePercentage(winCount, count),
               BigDecimal.valueOf(playerRepository.sumOfPlayerPoints(playerName))
-                  .divide(BigDecimal.valueOf(count))
+                  .divide(BigDecimal.valueOf(count), 3, RoundingMode.HALF_UP)
           ));
         });
 
     return result;
+  }
+
+  private BigDecimal computePercentage(long winCount, long count) {
+    return BigDecimal.valueOf(winCount)
+        .multiply(B_HUNDRED)
+        .divide(BigDecimal.valueOf(count), 3, RoundingMode.HALF_UP);
   }
 }
