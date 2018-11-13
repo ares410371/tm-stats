@@ -7,4 +7,6 @@ import java.util.List;
 public interface CorporationService {
 
   List<Corporation> getAllCorporations();
+
+  Corporation getById(Long id);
 }

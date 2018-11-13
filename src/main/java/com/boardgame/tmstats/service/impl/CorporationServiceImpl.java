@@ -1,6 +1,7 @@
 package com.boardgame.tmstats.service.impl;
 
 import com.boardgame.tmstats.domain.Corporation;
+import com.boardgame.tmstats.exceptions.CorporationNotFoundException;
 import com.boardgame.tmstats.repository.CorporationRepository;
 import com.boardgame.tmstats.service.CorporationService;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,11 @@ public class CorporationServiceImpl implements CorporationService {
   @Override
   public List<Corporation> getAllCorporations() {
     return corporationRepository.findAll();
+  }
+
+  @Override
+  public Corporation getById(Long id) {
+    return corporationRepository.findById(id)
+        .orElseThrow(CorporationNotFoundException::new);
   }
 }
