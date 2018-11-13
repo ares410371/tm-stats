@@ -13,16 +13,18 @@ import com.boardgame.tmstats.repository.GameRepository;
 import com.boardgame.tmstats.repository.PlayerRepository;
 import com.boardgame.tmstats.request.GameRequest;
 import com.boardgame.tmstats.response.GameResponse;
+import com.boardgame.tmstats.response.PlayerResponse;
 import com.boardgame.tmstats.service.GameService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Log4j2
 @Service
@@ -68,13 +70,24 @@ public class GameServiceImpl implements GameService {
   }
 
   @Override
-  public List<GameResponse> getAllGames() {
-    return gameRepository.findAll().stream().map(game -> {
-      GameResponse gameResponse = new GameResponse();
-      Set<Player> players = game.getPlayers();
-      gameResponse.setPlayers(players.stream().map(Player::getName).collect(Collectors.toList()));
-      gameResponse.setBoardName(game.getBoard().getName());
-      return gameResponse;
+  public List<GameResponse> getGamesByPlayerCount(int playerCount) {
+    if (IntStream.rangeClosed(1,5).noneMatch(x -> x == playerCount)) {
+      throw new IllegalArgumentException("Player count is out of range.");
+    }
+
+    return gameRepository.getByPlayerCount(playerCount).stream().map(game -> {
+      GameResponse response = new GameResponse();
+      response.setBoardName(game.getBoard().getName());
+      response.setGenerationCount(game.getGenerationCount());
+      response.setPlayedAt(LocalDate.now()); // Todo add field to 'db'
+      response.setPlayers(game.getPlayers().stream().map(player -> {
+        PlayerResponse playerResponse = new PlayerResponse();
+        playerResponse.setName(player.getName());
+        playerResponse.setPoints(player.getPoints());
+        playerResponse.setCorporationName(player.getCorporation().getName());
+        return playerResponse;
+      }).collect(Collectors.toList()));
+      return response;
     }).collect(Collectors.toList());
   }
 

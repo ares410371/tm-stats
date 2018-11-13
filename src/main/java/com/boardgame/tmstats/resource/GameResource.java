@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +42,9 @@ public class GameResource {
     return new ResponseEntity<>(game, HeadersUtils.getLocationHeaders(game.getId()), HttpStatus.CREATED);
   }
 
-  @ApiOperation(value = "Get all games")
-  @GetMapping
-  public ResponseEntity<List<GameResponse>> getGames() {
-    return ResponseEntity.ok(gameService.getAllGames());
+  @ApiOperation(value = "Get games by player counts. Available values 1..5")
+  @GetMapping("/{players}")
+  public ResponseEntity<List<GameResponse>> getGamesByPlayerCount(@PathVariable int players) {
+    return ResponseEntity.ok(gameService.getGamesByPlayerCount(players));
   }
 }

@@ -8,7 +8,19 @@ import java.util.List;
 
 public interface GameService {
 
+  /**
+   * Create game.
+   *
+   * @param gameRequest game parameters
+   * @return created game
+   */
   Game createGame(GameRequest gameRequest);
 
-  List<GameResponse> getAllGames();
+  /**
+   * Return all game by player count.
+   *
+   * @param playerCount input parameter
+   * @return List of games
+   */
+  List<GameResponse> getGamesByPlayerCount(int playerCount);
 }
